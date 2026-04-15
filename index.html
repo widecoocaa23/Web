@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitCore — Inicio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">FIT<span>CORE</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <button class="nav-btn" onclick="window.location.href='contacto.html'">Empieza ahora</button>
+  </nav>
+
+  <!-- INICIO / HERO -->
+  <section id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+
+    <div class="hero-inner">
+
+      <!-- TEXTO -->
+      <div class="hero-text">
+        <div class="hero-kicker">
+          <div class="kicker-dot"></div>
+          <span class="kicker-text">Fitness · Nutrición · Suplementación</span>
+        </div>
+
+        <h1 class="hero-headline">
+          <span class="line-green">SUPERA</span><br>
+          TUS<br>
+          <span class="line-amber">LÍMITES</span>
+        </h1>
+
+        <p class="hero-desc">
+          Programas de entrenamiento, planes nutricionales y suplementos premium para que alcances tus objetivos de forma real, progresiva y sostenible.
+        </p>
+
+        <div class="hero-actions">
+          <a href="servicios.html" class="btn-primary">Ver planes ↓</a>
+          <a href="productos.html" class="btn-ghost">Explorar tienda</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hstat">
+            <div class="hstat-num">2.4K</div>
+            <div class="hstat-label">Clientes activos</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-num">98%</div>
+            <div class="hstat-label">Satisfacción</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-num">8 años</div>
+            <div class="hstat-label">De experiencia</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISUAL -->
+      <div class="hero-visual">
+        <div class="hero-card-big">
+          <div class="hcb-label">Progreso semanal</div>
+          <div class="hcb-val">78%</div>
+          <div class="hcb-sub">5 de 6 entrenamientos completados</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+        <div class="hero-cards-row">
+          <div class="hc-mini">
+            <div class="hc-mini-num green">50+</div>
+            <div class="hc-mini-label">Productos premium</div>
+          </div>
+          <div class="hc-mini">
+            <div class="hc-mini-num amber">3</div>
+            <div class="hc-mini-label">Planes disponibles</div>
+          </div>
+          <div class="hc-mini">
+            <div class="hc-mini-num">24/7</div>
+            <div class="hc-mini-label">Soporte online</div>
+          </div>
+          <div class="hc-mini">
+            <div class="hc-mini-num green">100%</div>
+            <div class="hc-mini-label">Productos certificados</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">FIT<span>CORE</span></a>
+        <p>Tu plataforma integral de fitness, nutrición y suplementación. Resultados reales, ciencia de verdad, comunidad de por vida.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="servicios.html">Plan Básico</a></li>
+          <li><a href="servicios.html">Plan Pro</a></li>
+          <li><a href="servicios.html">Plan Élite</a></li>
+          <li><a href="contacto.html">Consultoría</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Aviso legal</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Política de cookies</a></li>
+          <li><a href="#">Devoluciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>FitCore</strong> · Todos los derechos reservados · Málaga, España</p>
+      <p>Hecho con 💪 para quienes no se rinden · <a href="mailto:info@fitcore.es">info@fitcore.es</a></p>
+    </div>
+  </footer>
+
+  <script>
+    /* Fade in */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const fadeObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObs.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitCore — Contacto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">FIT<span>CORE</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="contacto.html" class="active">Contacto</a></li>
+    </ul>
+    <button class="nav-btn" onclick="window.location.href='contacto.html'">Empieza ahora</button>
+  </nav>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+
+    <div style="text-align:center; margin-bottom: 60px;" class="fade-in">
+      <div class="section-tag">📬 Contacto</div>
+      <h2 class="section-title">HABLEMOS <span class="hl">HOY</span></h2>
+      <p class="section-sub" style="margin: 0 auto;">¿Dudas sobre qué plan elegir? ¿Quieres saber qué suplementos necesitas? Escríbenos sin compromiso.</p>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- INFO -->
+      <div class="contact-left fade-in">
+        <div class="contact-info-item">
+          <div class="ci-icon">📍</div>
+          <div>
+            <div class="ci-label">Ubicación</div>
+            <div class="ci-value">Alcala de Henares, Madrid, España</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon">📞</div>
+          <div>
+            <div class="ci-label">Teléfono</div>
+            <div class="ci-value">+34 682 599 080</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon">📧</div>
+          <div>
+            <div class="ci-label">Email</div>
+            <div class="ci-value">widecoocaa@fitcore.es</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon">🕐</div>
+          <div>
+            <div class="ci-label">Horario</div>
+            <div class="ci-value">Lun – Vie: 08:00 – 20:00</div>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn" title="Instagram">📸</a>
+          <a href="#" class="social-btn" title="YouTube">▶️</a>
+          <a href="#" class="social-btn" title="TikTok">🎵</a>
+          <a href="#" class="social-btn" title="WhatsApp">💬</a>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="contact-form fade-in">
+        <h3>Envíanos un mensaje</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" placeholder="Tu nombre" id="f-nombre"/>
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" placeholder="Tus apellidos" id="f-apellidos"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="tu@email.com" id="f-email"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono (opcional)</label>
+          <input type="tel" placeholder="+34 000 000 000" id="f-telefono"/>
+        </div>
+        <div class="form-group">
+          <label>¿Qué te interesa?</label>
+          <select id="f-interes">
+            <option value="">Selecciona una opción</option>
+            <option>Plan de entrenamiento</option>
+            <option>Plan nutricional</option>
+            <option>Suplementación personalizada</option>
+            <option>Plan combinado Pro</option>
+            <option>Plan Élite</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea placeholder="Cuéntanos tus objetivos, dudas o cualquier cosa que necesites..." id="f-mensaje"></textarea>
+        </div>
+        <button class="btn-submit" id="btn-enviar" onclick="submitForm()">Enviar mensaje →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">FIT<span>CORE</span></a>
+        <p>Tu plataforma integral de fitness, nutrición y suplementación. Resultados reales, ciencia de verdad, comunidad de por vida.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="servicios.html">Plan Básico</a></li>
+          <li><a href="servicios.html">Plan Pro</a></li>
+          <li><a href="servicios.html">Plan Élite</a></li>
+          <li><a href="contacto.html">Consultoría</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Aviso legal</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Política de cookies</a></li>
+          <li><a href="#">Devoluciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>FitCore</strong> · Todos los derechos reservados · Málaga, España</p>
+      <p>Hecho con 💪 para quienes no se rinden · <a href="mailto:info@fitcore.es">info@fitcore.es</a></p>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Fade in ── */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const fadeObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObs.observe(el));
+
+    /* ── Envío del formulario al backend ── */
+    async function submitForm() {
+      const nombre    = document.getElementById('f-nombre').value.trim();
+      const apellidos = document.getElementById('f-apellidos').value.trim();
+      const email     = document.getElementById('f-email').value.trim();
+      const telefono  = document.getElementById('f-telefono').value.trim();
+      const interes   = document.getElementById('f-interes').value;
+      const mensaje   = document.getElementById('f-mensaje').value.trim();
+
+      // Validación básica
+      if (!nombre || !email) {
+        alert('Por favor, completa al menos el nombre y el email.');
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Por favor, introduce un email válido.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-enviar');
+      btn.textContent = 'Enviando…';
+      btn.disabled    = true;
+
+      try {
+        const respuesta = await fetch('http://localhost:3000/contacto', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ nombre, apellidos, email, telefono, interes, mensaje })
+        });
+
+        const datos = await respuesta.json();
+
+        if (datos.ok) {
+          btn.textContent      = '✓ ¡Mensaje enviado!';
+          btn.style.background = '#3df5a5';
+
+          // Limpiar formulario
+          ['f-nombre','f-apellidos','f-email','f-telefono','f-mensaje'].forEach(id => {
+            document.getElementById(id).value = '';
+          });
+          document.getElementById('f-interes').selectedIndex = 0;
+
+          setTimeout(() => {
+            btn.textContent      = 'Enviar mensaje →';
+            btn.style.background = '';
+            btn.disabled         = false;
+          }, 3000);
+        } else {
+          alert('Error: ' + datos.error);
+          btn.textContent = 'Enviar mensaje →';
+          btn.disabled    = false;
+        }
+      } catch (err) {
+        alert('No se pudo conectar con el servidor. Asegúrate de que está en marcha.');
+        console.error(err);
+        btn.textContent = 'Enviar mensaje →';
+        btn.disabled    = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

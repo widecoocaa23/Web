@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitCore — Acceso Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:      #080808;
+      --surface: #111;
+      --border:  #1e1e1e;
+      --accent:  #3df5a5;
+      --text:    #e8e8e8;
+      --muted:   #555;
+      --danger:  #f55d3d;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Fondo animado */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(61,245,165,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61,245,165,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove { from { background-position: 0 0; } to { background-position: 40px 40px; } }
+
+    .glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(61,245,165,.07) 0%, transparent 70%);
+      top: -200px; left: -200px;
+      pointer-events: none;
+      z-index: 0;
+      animation: glowPulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse { from { opacity: .5; transform: scale(1); } to { opacity: 1; transform: scale(1.1); } }
+
+    /* Card */
+    .card {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 52px 48px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 40px 80px rgba(0,0,0,.6);
+      animation: cardIn .5s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes cardIn { from { opacity:0; transform: translateY(24px) scale(.97); } to { opacity:1; transform: none; } }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 4px;
+      color: var(--text);
+      text-align: center;
+      display: block;
+      text-decoration: none;
+      margin-bottom: 6px;
+    }
+    .logo span { color: var(--accent); }
+
+    .subtitle {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(61,245,165,.12);
+    }
+    input::placeholder { color: #333; }
+
+    .btn-login {
+      width: 100%;
+      background: var(--accent);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity .2s, transform .1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-login:hover   { opacity: .9; }
+    .btn-login:active  { transform: scale(.98); }
+    .btn-login:disabled { opacity: .5; cursor: not-allowed; }
+
+    .error-msg {
+      background: rgba(245,93,61,.1);
+      border: 1px solid rgba(245,93,61,.3);
+      color: var(--danger);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 13px;
+      margin-top: 16px;
+      display: none;
+      animation: shake .4s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60%  { transform: translateX(-6px); }
+      40%,80%  { transform: translateX(6px); }
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 32px 0 20px;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* Spinner dentro del botón */
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,.3);
+      border-top-color: #0a0a0a;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="glow"></div>
+
+  <div class="card">
+    <a href="index.html" class="logo">FIT<span>CORE</span></a>
+    <p class="subtitle">Panel de administración</p>
+
+    <div class="form-group">
+      <label>Usuario</label>
+      <input type="text" id="usuario" placeholder="admin" autocomplete="username" onkeydown="if(event.key==='Enter') login()"/>
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="password" placeholder="••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()"/>
+    </div>
+
+    <button class="btn-login" id="btn-login" onclick="login()">
+      <span id="btn-text">Entrar al panel →</span>
+      <span class="spinner" id="spinner"></span>
+    </button>
+
+    <div class="error-msg" id="error-msg">Usuario o contraseña incorrectos.</div>
+
+    <hr class="divider"/>
+    <a href="index.html" class="back-link">← Volver a FitCore</a>
+  </div>
+
+  <script>
+    // Si ya hay sesión activa, redirigir directo al panel
+    fetch('/auth-check').then(r => r.json()).then(d => {
+      if (d.autenticado) window.location.href = '/admin.html';
+    });
+
+    async function login() {
+      const usuario  = document.getElementById('usuario').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('btn-login');
+      const errEl    = document.getElementById('error-msg');
+      const spinner  = document.getElementById('spinner');
+      const btnText  = document.getElementById('btn-text');
+
+      if (!usuario || !password) {
+        mostrarError('Introduce usuario y contraseña.');
+        return;
+      }
+
+      btn.disabled       = true;
+      spinner.style.display = 'block';
+      btnText.textContent   = 'Comprobando…';
+      errEl.style.display   = 'none';
+
+      try {
+        const res  = await fetch('/login', {
+          method:      'POST',
+          headers:     { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body:        JSON.stringify({ usuario, password }),
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          btnText.textContent = '✓ Acceso concedido';
+          setTimeout(() => { window.location.href = '/admin.html'; }, 600);
+        } else {
+          mostrarError(data.error || 'Credenciales incorrectas.');
+          resetBtn();
+        }
+      } catch (e) {
+        mostrarError('No se pudo conectar con el servidor.');
+        resetBtn();
+      }
+    }
+
+    function mostrarError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent   = msg;
+      el.style.display = 'block';
+      // Re-trigger animation
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = '';
+    }
+
+    function resetBtn() {
+      const btn    = document.getElementById('btn-login');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('btn-text');
+      btn.disabled          = false;
+      spinner.style.display = 'none';
+      btnText.textContent   = 'Entrar al panel →';
+    }
+  </script>
+</body>
+</html>

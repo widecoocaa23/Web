@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitCore — Productos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">FIT<span>CORE</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="productos.html" class="active">Productos</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <button class="nav-btn" onclick="window.location.href='contacto.html'">Empieza ahora</button>
+  </nav>
+
+  <!-- PRODUCTOS -->
+  <section id="productos">
+
+    <div class="products-header fade-in">
+      <div>
+        <div class="section-tag">🛒 Tienda</div>
+        <h2 class="section-title">NUESTROS <span class="hl">PRODUCTOS</span></h2>
+        <p class="section-sub">Suplementos y alimentos de máxima calidad, formulados para potenciar tu rendimiento y recuperación.</p>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterProducts('todos', this)">Todos</button>
+        <button class="filter-tab" onclick="filterProducts('proteina', this)">Proteína</button>
+        <button class="filter-tab" onclick="filterProducts('pre-entreno', this)">Pre-entreno</button>
+        <button class="filter-tab" onclick="filterProducts('nutricion', this)">Nutrición</button>
+        <button class="filter-tab" onclick="filterProducts('recuperacion', this)">Recuperación</button>
+      </div>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+
+      <div class="product-card fade-in" data-cat="proteina">
+        <div class="product-thumb pt-green">
+          <img src="img/proteina_2.jpeg" alt="">
+          <span class="product-badge">Proteína</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Whey / Sin lactosa</div>
+          <div class="product-name">Forza Protein</div>
+          <div class="product-desc">25 g de proteína por servicio. Sin lactosa, sin azúcar añadido. Sabores: chocolate, vainilla y fresa.</div>
+          <div class="product-footer">
+            <div class="product-price">34,90€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in" data-cat="pre-entreno">
+        <div class="product-thumb pt-amber">
+          <img src="img/preentreno_2.jpeg" alt="">
+          <span class="product-badge">Pre-entreno</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Energía / Enfoque</div>
+          <div class="product-name">Moons Truck</div>
+          <div class="product-desc">Cafeína natural + Beta-Alanina + Creatina monohidrato. Energía sostenida sin picos ni caídas bruscas.</div>
+          <div class="product-footer">
+            <div class="product-price">28,50€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in" data-cat="nutricion">
+        <div class="product-thumb pt-blue">
+          <img src="img/Nutricion.png" alt="">
+          <span class="product-badge">Nutrición</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Comida preparada / Macros</div>
+          <div class="product-name">Pack Meal Prep</div>
+          <div class="product-desc">Plan semanal de comidas equilibradas con macros calculados según tu objetivo. Entrega en 24 h.</div>
+          <div class="product-footer">
+            <div class="product-price">59,00€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in" data-cat="recuperacion">
+        <div class="product-thumb pt-pink">
+          <img src="img/recuperacion_muscular.jpeg" alt="">
+          <span class="product-badge">Recuperación</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">BCAA / Glutamina / Magnesio</div>
+          <div class="product-name">NDL Muscle Regeneration</div>
+          <div class="product-desc">Reduce el dolor muscular post-entreno, mejora el descanso nocturno y acelera la recuperación.</div>
+          <div class="product-footer">
+            <div class="product-price">22,90€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in" data-cat="proteina">
+        <div class="product-thumb pt-amber">
+          <img src="img/Proteina.jpeg" alt="">
+          <span class="product-badge">Proteína</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Caseína / Nocturna</div>
+          <div class="product-name">Gold Standar Whey</div>
+          <div class="product-desc">Proteína de liberación lenta ideal para tomar antes de dormir. Mantiene el músculo durante el ayuno nocturno.</div>
+          <div class="product-footer">
+            <div class="product-price">39,90€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card fade-in" data-cat="pre-entreno">
+        <div class="product-thumb pt-green">
+          <img src="img/preentreno.jpeg" alt="">
+          <span class="product-badge">Pre-entreno</span>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Termogénico / Fat burner</div>
+          <div class="product-name">Vitastrong Pre-Workout</div>
+          <div class="product-desc">Fórmula termogénica con extracto de té verde, L-Carnitina y CLA para potenciar la oxidación de grasas.</div>
+          <div class="product-footer">
+            <div class="product-price">32,00€</div>
+            <button class="btn-add" onclick="addToCart(this)">+ Añadir</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">FIT<span>CORE</span></a>
+        <p>Tu plataforma integral de fitness, nutrición y suplementación. Resultados reales, ciencia de verdad, comunidad de por vida.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="servicios.html">Plan Básico</a></li>
+          <li><a href="servicios.html">Plan Pro</a></li>
+          <li><a href="servicios.html">Plan Élite</a></li>
+          <li><a href="contacto.html">Consultoría</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Aviso legal</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Política de cookies</a></li>
+          <li><a href="#">Devoluciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>FitCore</strong> · Todos los derechos reservados · Málaga, España</p>
+      <p>Hecho con 💪 para quienes no se rinden · <a href="mailto:info@fitcore.es">info@fitcore.es</a></p>
+    </div>
+  </footer>
+
+  <script>
+    /* Fade in */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const fadeObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObs.observe(el));
+
+    /* Filtro de productos */
+    function filterProducts(cat, btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.display = (cat === 'todos' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+
+    /* Añadir al carrito */
+    function addToCart(btn) {
+      const original = btn.textContent;
+      btn.textContent = '✓ Añadido';
+      btn.style.background = 'var(--c-green)';
+      btn.style.color = '#000';
+      btn.style.borderColor = 'var(--c-green)';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    }
+  </script>
+
+</body>
+</html>

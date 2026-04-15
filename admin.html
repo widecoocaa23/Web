@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitCore — Panel Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --border:  #1f1f1f;
+      --accent:  #3df5a5;
+      --accent2: #f5c33d;
+      --accent3: #f55d8a;
+      --text:    #e8e8e8;
+      --muted:   #666;
+      --danger:  #f55d3d;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+    /* ── Topbar ── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 64px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-left  { display: flex; align-items: center; gap: 16px; }
+    .topbar-logo  { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
+    .topbar-logo span { color: var(--accent); }
+    .topbar-tag   { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: var(--border); padding: 4px 12px; border-radius: 20px; }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+    .user-chip { font-size: 12px; color: var(--muted); background: var(--border); padding: 6px 14px; border-radius: 20px; }
+
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: opacity .2s, transform .1s; text-decoration: none; font-family: 'DM Sans', sans-serif; }
+    .btn:active { transform: scale(.97); }
+    .btn-accent  { background: var(--accent);  color: #0a0a0a; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-danger  { background: transparent; border: 1px solid rgba(245,93,61,.3); color: var(--danger); }
+    .btn-danger:hover { border-color: var(--danger); background: rgba(245,93,61,.08); }
+
+    /* ── Main ── */
+    main { padding: 40px; max-width: 1440px; margin: 0 auto; }
+
+    /* ── Stats ── */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 36px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; transition: border-color .2s; }
+    .stat-card:hover { border-color: var(--accent); }
+    .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--accent); line-height: 1; }
+    .stat-value.sm { font-size: 22px; padding-top: 6px; }
+    .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── Charts grid ── */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 36px; }
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+    .chart-title { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .chart-wrap  { position: relative; height: 200px; }
+
+    /* ── Toolbar ── */
+    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 16px; flex-wrap: wrap; }
+    .search-box { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 16px; flex: 1; max-width: 360px; transition: border-color .2s; }
+    .search-box:focus-within { border-color: var(--accent); }
+    .search-box input { background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; width: 100%; }
+    .search-box input::placeholder { color: var(--muted); }
+
+    /* ── Table ── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead tr { background: #141414; border-bottom: 1px solid var(--border); }
+    th { padding: 14px 18px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); white-space: nowrap; cursor: pointer; user-select: none; transition: color .2s; }
+    th:hover { color: var(--accent); }
+    th .sort-icon { margin-left: 4px; opacity: .4; }
+    th.active-sort { color: var(--accent); }
+    th.active-sort .sort-icon { opacity: 1; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #161616; }
+    td { padding: 13px 18px; vertical-align: middle; max-width: 220px; }
+    td .cell-main { font-weight: 600; color: var(--text); }
+    td .cell-sub  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    td .email-link { color: var(--accent); text-decoration: none; font-size: 13px; }
+    td .email-link:hover { text-decoration: underline; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #1a2e23; color: var(--accent); white-space: nowrap; }
+    .badge-yellow { background: #2e2a1a; color: var(--accent2); }
+    .badge-gray   { background: var(--border); color: var(--muted); }
+    .msg-cell { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); font-size: 13px; }
+
+    /* ── States ── */
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+    .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 14px; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toast ── */
+    #toast { position: fixed; bottom: 28px; right: 28px; background: var(--surface); border: 1px solid var(--accent); color: var(--accent); padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; z-index: 999; pointer-events: none; }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    .page-footer { text-align: center; color: var(--muted); font-size: 12px; padding: 32px 40px; }
+
+    @media (max-width: 1100px) { .charts-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; }
+      main { padding: 20px 16px; }
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      table { font-size: 12px; }
+      td, th { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="topbar-logo">FIT<span>CORE</span></a>
+      <span class="topbar-tag">Panel Admin</span>
+    </div>
+    <div class="topbar-actions">
+      <span class="user-chip" id="user-chip">👤 admin</span>
+      <button class="btn btn-outline" onclick="cargarTodo()">↺ Actualizar</button>
+      <a class="btn btn-accent" href="/contactos/excel" id="btn-excel">⬇ Excel</a>
+      <button class="btn btn-danger" onclick="logout()">Salir →</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Total contactos</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">en base de datos</div></div>
+      <div class="stat-card"><div class="stat-label">Hoy</div><div class="stat-value" id="stat-hoy">—</div><div class="stat-sub">recibidos hoy</div></div>
+      <div class="stat-card"><div class="stat-label">Esta semana</div><div class="stat-value" id="stat-semana">—</div><div class="stat-sub">últimos 7 días</div></div>
+      <div class="stat-card"><div class="stat-label">Interés top</div><div class="stat-value sm" id="stat-popular">—</div><div class="stat-sub" id="stat-popular-sub"></div></div>
+      <div class="stat-card"><div class="stat-label">Último contacto</div><div class="stat-value sm" id="stat-ultimo">—</div><div class="stat-sub" id="stat-ultimo-sub"></div></div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">📈 Contactos por semana</div>
+        <div class="chart-wrap"><canvas id="chart-semanas"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📅 Contactos por mes</div>
+        <div class="chart-wrap"><canvas id="chart-meses"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🎯 Por interés</div>
+        <div class="chart-wrap"><canvas id="chart-interes"></canvas></div>
+      </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="toolbar">
+      <div class="search-box">
+        <span style="color:var(--muted)">🔍</span>
+        <input type="text" id="buscador" placeholder="Buscar por nombre, email, interés…" oninput="filtrar()"/>
+      </div>
+      <span style="font-size:13px;color:var(--muted);" id="contador-label"></span>
+    </div>
+
+    <div class="table-wrap">
+      <div class="loading" id="loading"><span class="spinner"></span> Cargando…</div>
+      <table id="tabla" style="display:none;">
+        <thead>
+          <tr>
+            <th onclick="ordenar('id')"       data-col="id">#  <span class="sort-icon">↕</span></th>
+            <th onclick="ordenar('fecha')"    data-col="fecha">Fecha <span class="sort-icon">↕</span></th>
+            <th onclick="ordenar('nombre')"   data-col="nombre">Nombre <span class="sort-icon">↕</span></th>
+            <th onclick="ordenar('email')"    data-col="email">Email <span class="sort-icon">↕</span></th>
+            <th onclick="ordenar('telefono')" data-col="telefono">Teléfono <span class="sort-icon">↕</span></th>
+            <th onclick="ordenar('interes')"  data-col="interes">Interés <span class="sort-icon">↕</span></th>
+            <th>Mensaje</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty-state" id="empty" style="display:none;"><div class="icon">📭</div><p>No se encontraron contactos</p></div>
+    </div>
+
+  </main>
+
+  <footer class="page-footer">FitCore Admin Panel · <a href="/contactos" style="color:var(--accent);text-decoration:none;">Ver JSON</a></footer>
+  <div id="toast"></div>
+
+  <script>
+    // ── Auth check ───────────────────────────────────────────────────────────
+    fetch('/auth-check', { credentials: 'include' })
+      .then(r => r.json())
+      .then(d => { if (!d.autenticado) window.location.href = '/login.html'; });
+
+    // ── Estado ───────────────────────────────────────────────────────────────
+    let todos = [], filtrados = [], sortCol = 'id', sortAsc = false;
+    let chartSemanas, chartMeses, chartInteres;
+
+    const CHART_DEFAULTS = {
+      color:   '#3df5a5',
+      color2:  '#f5c33d',
+      muted:   '#333',
+      grid:    '#1a1a1a',
+      text:    '#666',
+      font:    'DM Sans',
+    };
+
+    // ── Cargar todo ───────────────────────────────────────────────────────────
+    async function cargarTodo() {
+      await Promise.all([ cargarContactos(), cargarStats() ]);
+    }
+
+    async function cargarContactos() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('tabla').style.display   = 'none';
+      document.getElementById('empty').style.display   = 'none';
+      try {
+        const res = await fetch('/contactos', { credentials: 'include' });
+        if (res.status === 401) { window.location.href = '/login.html'; return; }
+        todos     = await res.json();
+        filtrados = [...todos];
+        calcularStats();
+        renderTabla();
+        toast('✅ Datos actualizados');
+      } catch (e) {
+        document.getElementById('loading').innerHTML =
+          '<p style="color:var(--danger)">⚠️ No se pudo conectar con el servidor.</p>';
+      }
+    }
+
+    async function cargarStats() {
+      try {
+        const res  = await fetch('/contactos/stats', { credentials: 'include' });
+        if (res.status === 401) return;
+        const data = await res.json();
+        renderCharts(data);
+      } catch(e) { console.warn('Stats no disponibles:', e.message); }
+    }
+
+    // ── Stats ─────────────────────────────────────────────────────────────────
+    function calcularStats() {
+      document.getElementById('stat-total').textContent = todos.length;
+
+      const hoy    = new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});
+      const hoyN   = todos.filter(c => c.fecha?.startsWith(hoy)).length;
+      document.getElementById('stat-hoy').textContent = hoyN;
+
+      // Últimos 7 días
+      const hace7  = new Date(); hace7.setDate(hace7.getDate() - 7);
+      const semN   = todos.filter(c => {
+        if (!c.fecha) return false;
+        const [d, m, y] = c.fecha.split(',')[0].split('/');
+        return new Date(`${y}-${m}-${d}`) >= hace7;
+      }).length;
+      document.getElementById('stat-semana').textContent = semN;
+
+      const frec = {};
+      todos.forEach(c => { if (c.interes) frec[c.interes] = (frec[c.interes]||0)+1; });
+      const top = Object.entries(frec).sort((a,b)=>b[1]-a[1])[0];
+      if (top) {
+        document.getElementById('stat-popular').textContent     = top[1];
+        document.getElementById('stat-popular-sub').textContent = top[0];
+      }
+
+      if (todos.length) {
+        document.getElementById('stat-ultimo').textContent     = todos[0].nombre;
+        document.getElementById('stat-ultimo-sub').textContent = todos[0].fecha;
+      }
+    }
+
+    // ── Gráficas ──────────────────────────────────────────────────────────────
+    function renderCharts({ porSemana, porMes, porInteres }) {
+      const defaults = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+      };
+      const gridOpts = {
+        color: CHART_DEFAULTS.grid,
+        drawBorder: false,
+      };
+      const tickOpts = {
+        color: CHART_DEFAULTS.text,
+        font: { family: CHART_DEFAULTS.font, size: 11 },
+      };
+
+      // Destruir anteriores si existen
+      if (chartSemanas) chartSemanas.destroy();
+      if (chartMeses)   chartMeses.destroy();
+      if (chartInteres) chartInteres.destroy();
+
+      // Semanas
+      chartSemanas = new Chart(document.getElementById('chart-semanas'), {
+        type: 'bar',
+        data: {
+          labels:   porSemana.map(d => d.semana),
+          datasets: [{ data: porSemana.map(d => d.total), backgroundColor: 'rgba(61,245,165,.7)', borderRadius: 6, borderSkipped: false }],
+        },
+        options: {
+          ...defaults,
+          scales: {
+            x: { grid: gridOpts, ticks: { ...tickOpts, maxRotation: 45 } },
+            y: { grid: gridOpts, ticks: { ...tickOpts, stepSize: 1 }, beginAtZero: true },
+          },
+        },
+      });
+
+      // Meses
+      chartMeses = new Chart(document.getElementById('chart-meses'), {
+        type: 'line',
+        data: {
+          labels:   porMes.map(d => d.mes),
+          datasets: [{
+            data:            porMes.map(d => d.total),
+            borderColor:     '#3df5a5',
+            backgroundColor: 'rgba(61,245,165,.1)',
+            borderWidth:     2,
+            pointBackgroundColor: '#3df5a5',
+            pointRadius:     5,
+            tension:         0.4,
+            fill:            true,
+          }],
+        },
+        options: {
+          ...defaults,
+          scales: {
+            x: { grid: gridOpts, ticks: tickOpts },
+            y: { grid: gridOpts, ticks: { ...tickOpts, stepSize: 1 }, beginAtZero: true },
+          },
+        },
+      });
+
+      // Interés (doughnut)
+      const colores = ['#3df5a5','#f5c33d','#f55d8a','#5d9cf5','#c55df5'];
+      chartInteres = new Chart(document.getElementById('chart-interes'), {
+        type: 'doughnut',
+        data: {
+          labels:   porInteres.map(d => d.interes),
+          datasets: [{
+            data:            porInteres.map(d => d.total),
+            backgroundColor: colores,
+            borderColor:     '#111',
+            borderWidth:     3,
+            hoverOffset:     6,
+          }],
+        },
+        options: {
+          ...defaults,
+          cutout: '65%',
+          plugins: {
+            legend: {
+              display:  true,
+              position: 'bottom',
+              labels: {
+                color:     CHART_DEFAULTS.text,
+                font:      { family: CHART_DEFAULTS.font, size: 11 },
+                boxWidth:  12,
+                padding:   12,
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // ── Render tabla ──────────────────────────────────────────────────────────
+    function renderTabla() {
+      document.getElementById('loading').style.display = 'none';
+      if (!filtrados.length) {
+        document.getElementById('tabla').style.display = 'none';
+        document.getElementById('empty').style.display = 'block';
+        document.getElementById('contador-label').textContent = '0 registros';
+        return;
+      }
+      document.getElementById('tabla').style.display = '';
+      document.getElementById('empty').style.display = 'none';
+      document.getElementById('contador-label').textContent =
+        `${filtrados.length} de ${todos.length} registro${todos.length!==1?'s':''}`;
+
+      const BADGE = { 'Suplementación personalizada':'badge-yellow','Plan combinado Pro':'badge-yellow','Plan Élite':'badge-yellow' };
+      document.getElementById('tbody').innerHTML = filtrados.map(c => `
+        <tr>
+          <td><span style="color:var(--muted);font-size:12px;">#${c.id}</span></td>
+          <td>
+            <div class="cell-main" style="font-size:13px;">${c.fecha?.split(',')[0]||'—'}</div>
+            <div class="cell-sub">${c.fecha?.split(',')[1]||''}</div>
+          </td>
+          <td><div class="cell-main">${esc(c.nombre)} ${esc(c.apellidos||'')}</div></td>
+          <td><a href="mailto:${esc(c.email)}" class="email-link">${esc(c.email)}</a></td>
+          <td style="color:var(--muted);font-size:13px;">${esc(c.telefono||'—')}</td>
+          <td>${c.interes ? `<span class="badge ${BADGE[c.interes]||''}">${esc(c.interes)}</span>` : `<span class="badge badge-gray">—</span>`}</td>
+          <td><div class="msg-cell" title="${esc(c.mensaje||'')}">${esc(c.mensaje||'')||'<span style="color:var(--border)">—</span>'}</div></td>
+        </tr>`).join('');
+    }
+
+    function filtrar() {
+      const q = document.getElementById('buscador').value.toLowerCase();
+      filtrados = todos.filter(c =>
+        [c.nombre,c.apellidos,c.email,c.interes,c.telefono,c.mensaje].some(v=>v&&v.toLowerCase().includes(q))
+      );
+      renderTabla();
+    }
+
+    function ordenar(col) {
+      if (sortCol===col) sortAsc=!sortAsc; else { sortCol=col; sortAsc=true; }
+      document.querySelectorAll('th[data-col]').forEach(th=>{
+        th.classList.remove('active-sort');
+        th.querySelector('.sort-icon').textContent='↕';
+      });
+      const activo=document.querySelector(`th[data-col="${col}"]`);
+      if (activo){ activo.classList.add('active-sort'); activo.querySelector('.sort-icon').textContent=sortAsc?'↑':'↓'; }
+      filtrados.sort((a,b)=>sortAsc?String(a[col]??'').localeCompare(String(b[col]??'')):String(b[col]??'').localeCompare(String(a[col]??'')));
+      renderTabla();
+    }
+
+    async function logout() {
+      await fetch('/logout', { method:'POST', credentials:'include' });
+      window.location.href = '/login.html';
+    }
+
+    function toast(msg) {
+      const el=document.getElementById('toast');
+      el.textContent=msg; el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'),2500);
+    }
+
+    function esc(s){ return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    cargarTodo();
+  </script>
+</body>
+</html>
